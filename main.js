@@ -4,7 +4,7 @@
 // http://www.ni-sp.com/DCVSDK/
 
 import "./dcvjs/dcv.js"
-import { CONFIGTEACHER, CONFIGSTUDENT } from './config.js'
+import { CONFIGTEACHER, CONFIGSTUDENT, CONFIGSTUDENT2 } from './config.js'
 
 
 let auth,
@@ -68,6 +68,24 @@ function showLaunchPrompt () {
     teacherLabel.appendChild(teacherText);
     radioContainer.appendChild(teacherLabel);
     
+    // Student2 radio
+    const student2Label = document.createElement('label');
+    student2Label.style.cssText = 'display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 18px; padding: 10px; border-radius: 6px; transition: background 0.2s;';
+    student2Label.onmouseover = () => student2Label.style.background = '#f5f5f5';
+    student2Label.onmouseout = () => student2Label.style.background = 'transparent';
+    
+    const student2Radio = document.createElement('input');
+    student2Radio.type = 'radio';
+    student2Radio.name = 'role';
+    student2Radio.value = 'student2';
+    student2Radio.id = 'role-student2';
+    student2Radio.style.cssText = 'width: 20px; height: 20px; cursor: pointer;';
+    
+    const student2Text = document.createTextNode('Student 2');
+    student2Label.appendChild(student2Radio);
+    student2Label.appendChild(student2Text);
+    radioContainer.appendChild(student2Label);
+    
     container.appendChild(radioContainer);
     
     // Launch button
@@ -80,7 +98,13 @@ function showLaunchPrompt () {
     button.onclick = () => {
         // Get selected role
         const selectedRole = document.querySelector('input[name="role"]:checked').value;
-        selectedConfig = selectedRole === 'teacher' ? CONFIGTEACHER : CONFIGSTUDENT;
+        if (selectedRole === 'teacher') {
+            selectedConfig = CONFIGTEACHER;
+        } else if (selectedRole === 'student2') {
+            selectedConfig = CONFIGSTUDENT2;
+        } else {
+            selectedConfig = CONFIGSTUDENT;
+        }
         
         container.remove();
         showLoadingMessage();
