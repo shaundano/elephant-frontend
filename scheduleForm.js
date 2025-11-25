@@ -319,10 +319,8 @@ export function createScheduleForm() {
         submitButton.style.background = '#cccccc';
         submitButton.style.cursor = 'not-allowed';
         
-        // Calculate the base URL for the frontend
-        const currentPath = window.location.pathname;
-        const destinationPage = currentPath.replace('index.html', 'meeting.html');
-        const frontendBaseUrl = window.location.origin + destinationPage;
+        // Calculate the base URL for the frontend (always point to meeting.html)
+        const frontendBaseUrl = `${window.location.origin}/meeting.html`;
         
         // Prepare payload
         const payload = {
