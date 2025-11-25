@@ -16,7 +16,7 @@
 
 ## Repository Structure
 
-- `index.html` – Static entry point that loads the module bundle.
+- `meeting.html` – Static entry point that loads the module bundle.
 - `main.js` – Application logic for authentication, connection management, and UI overlays.
 - `config.js` – Active environment configuration; copy or adapt from `configexample.js`.
 - `dcvjs/` – UMD build of the NICE DCV Web Client SDK and its workers.

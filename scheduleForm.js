@@ -321,7 +321,7 @@ export function createScheduleForm() {
         
         // Calculate the base URL for the frontend
         const currentPath = window.location.pathname;
-        const destinationPage = currentPath.replace('schedule.html', 'index.html');
+        const destinationPage = currentPath.replace('index.html', 'meeting.html');
         const frontendBaseUrl = window.location.origin + destinationPage;
         
         // Prepare payload
@@ -348,7 +348,7 @@ export function createScheduleForm() {
                 successContainer.style.display = 'block';
                 
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'meeting.html';
                 }, 1000);
                 return;
             }
@@ -397,7 +397,7 @@ export function createScheduleForm() {
                 
                 // Navigate to DCV page with encoded links as URL parameters
                 if (teacherLink && studentLink) {
-                    const redirectUrl = `index.html?tlink=${encodeURIComponent(teacherLink)}&slink=${encodeURIComponent(studentLink)}`;
+                    const redirectUrl = `meeting.html?tlink=${encodeURIComponent(teacherLink)}&slink=${encodeURIComponent(studentLink)}`;
                     setTimeout(() => {
                         window.location.href = redirectUrl;
                     }, 1000);
@@ -405,7 +405,7 @@ export function createScheduleForm() {
                     // Fallback if links are missing
                     console.warn('Teacher or student link missing from response');
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'meeting.html';
                     }, 1000);
                 }
             } else {
@@ -466,7 +466,7 @@ export function showScheduleForm() {
     document.body.appendChild(form);
 }
 
-// Auto-show form when this script is loaded (for schedule.html page)
+// Auto-show form when this script is loaded (for index.html page)
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         showScheduleForm();
