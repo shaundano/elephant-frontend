@@ -17,7 +17,7 @@ export const ENV = {
     DCV_TEACHER_PASSWORD: "Elephant_123",
     
     // DCV Server Configuration - Student
-    DCV_STUDENT_SERVER: "https://dcvstudent.christardy.com:8443",
+    DCV_STUDENT_SERVER: "https://i-02ace3289043a399d.christardy.com:8443",
     DCV_STUDENT_USER: "KioskUser",
     DCV_STUDENT_PASSWORD: "Elephant_123",
 };

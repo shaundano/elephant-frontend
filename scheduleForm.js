@@ -33,30 +33,14 @@ const TIMEZONES = [
 ];
 
 /**
- * Rounds a date to the nearest 15-minute block
- */
-function roundToNearest15Minutes(date) {
-    const minutes = date.getMinutes();
-    const roundedMinutes = Math.round(minutes / 15) * 15;
-    const roundedDate = new Date(date);
-    roundedDate.setMinutes(roundedMinutes);
-    roundedDate.setSeconds(0);
-    roundedDate.setMilliseconds(0);
-    return roundedDate;
-}
-
-/**
- * Gets the minimum allowed date/time (30 minutes in the past, rounded down to 15-minute block)
+ * Gets the minimum allowed date/time (30 minutes in the past)
  */
 function getMinDateTime() {
     const now = new Date();
     const minTime = new Date(now.getTime() - 30 * 60 * 1000); // 30 minutes in the past
-    const rounded = roundToNearest15Minutes(minTime);
-    // If rounded time is after the minimum, subtract 15 minutes to ensure we're within bounds
-    if (rounded > minTime) {
-        rounded.setMinutes(rounded.getMinutes() - 15);
-    }
-    return rounded;
+    minTime.setSeconds(0);
+    minTime.setMilliseconds(0);
+    return minTime;
 }
 
 /**
@@ -72,7 +56,7 @@ function formatDateTimeLocal(date) {
 }
 
 /**
- * Validates that the meet time is at least 30 minutes in the past and on a 15-minute boundary
+ * Validates that the meet time is at least 30 minutes in the past
  */
 function validateMeetTime(dateTimeString, timezone) {
     if (!dateTimeString) {
@@ -85,12 +69,6 @@ function validateMeetTime(dateTimeString, timezone) {
     // Check if it's a valid date
     if (isNaN(selectedDate.getTime())) {
         return { valid: false, message: 'Invalid date/time' };
-    }
-
-    // Check if it's on a 15-minute boundary
-    const minutes = selectedDate.getMinutes();
-    if (minutes % 15 !== 0) {
-        return { valid: false, message: 'Time must be on 15-minute intervals (:00, :15, :30, :45)' };
     }
 
     // Check if it's at least 30 minutes in the past or later
@@ -228,7 +206,7 @@ export function createScheduleForm() {
     meetTimeInput.id = 'meet-time';
     meetTimeInput.name = 'meet_time';
     meetTimeInput.required = true;
-    meetTimeInput.step = 900; // 15 minutes in seconds
+    meetTimeInput.step = 60; // 1 minute in seconds
     meetTimeInput.style.cssText = 'padding: 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit;';
     
     // Set minimum date/time
@@ -238,21 +216,12 @@ export function createScheduleForm() {
     // Set initial value to the minimum
     meetTimeInput.value = formatDateTimeLocal(minDateTime);
     
-    // Add change handler to validate and round to 15-minute blocks
+    // Add change handler to validate
     meetTimeInput.addEventListener('change', (e) => {
         const selectedValue = e.target.value;
         if (selectedValue) {
-            const selectedDate = new Date(selectedValue);
-            const rounded = roundToNearest15Minutes(selectedDate);
-            const roundedValue = formatDateTimeLocal(rounded);
-            
-            // Update the input value if it was rounded
-            if (roundedValue !== selectedValue) {
-                e.target.value = roundedValue;
-            }
-            
             // Validate
-            const validation = validateMeetTime(roundedValue, timezoneSelect.value);
+            const validation = validateMeetTime(selectedValue, timezoneSelect.value);
             if (!validation.valid) {
                 errorContainer.textContent = validation.message;
                 errorContainer.style.display = 'block';
